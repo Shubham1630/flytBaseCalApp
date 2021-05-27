@@ -36,7 +36,8 @@ public class MainActivity extends AppCompatActivity {
     private Button histortViewbut;
     private List<String> arrayList;
     private FirebaseFirestore db;
-   private ArrayAdapter<String> arrayAdapter;
+    private ArrayAdapter<String> arrayAdapter;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -45,8 +46,6 @@ public class MainActivity extends AppCompatActivity {
         getLastTenCalList();
 
         historyList = findViewById(R.id.historyList);
-//        ArrayAdapter<String> arrayAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, arrayList);
-//        historyList.setAdapter(arrayAdapter);
 
         EditText edittext = (EditText)findViewById(R.id.input);
         TextView results = findViewById(R.id.results);
@@ -65,18 +64,18 @@ public class MainActivity extends AppCompatActivity {
                 boolean handled = false;
                 if (actionId == EditorInfo.IME_ACTION_SEND) {
                     results.setText("");
-                    String str = edittext.getText().toString().trim();
-                    results.setText(str);
+                    String str = edittext.getText().toString().trim().replaceAll("\\s+", "");
                     String regex = "[0-9]+";
                     if( str.contains("..")||str.contains("++")||str.contains("--")||str.contains("**")||
-                            str.contains("//")||str.contains("+-")||str.contains("*-")||str.contains("/-")||str.contains("/+")||str.contains("/*")||str.contains("+++"))
+                            str.contains("//")||str.contains("+-")||str.contains("*-")
+                            ||str.contains("/-")||str.contains("/+")||str.contains("/*")||str.contains("+++") || str.matches("^[a-zA-Z]*$"))
                     {
                         Toast.makeText(getApplicationContext(),"Invalid Expression",Toast.LENGTH_LONG).show();
-                    } else {
+                    } else  {
                         int equation = mads(str);
                         String equationString = String.valueOf(equation);
                         String pastResults = str + ""+"="+""+""+ equationString;
-                        if(!str.matches(regex)){
+                        if(!str.matches(regex) || str.matches("^[a-zA-Z]*$")){
                             arrayList.add(pastResults);
                         }
                         updateLastTenCalFireStore();
@@ -118,7 +117,6 @@ public class MainActivity extends AppCompatActivity {
                     if (document.exists() && document.get("pastCalculations") != null ) {
 
                         arrayList = (List<String>)document.get("pastCalculations");
-                        Toast.makeText(MainActivity.this, arrayList.toString(), Toast.LENGTH_SHORT).show();
                         arrayAdapter = new ArrayAdapter<String>(getApplicationContext(), android.R.layout.simple_list_item_1, arrayList);
                         historyList.setAdapter(arrayAdapter);
 

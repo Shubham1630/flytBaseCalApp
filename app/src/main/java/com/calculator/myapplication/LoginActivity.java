@@ -8,6 +8,7 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.util.Log;
 import android.view.View;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
@@ -35,7 +36,7 @@ import static android.content.ContentValues.TAG;
 public class LoginActivity extends AppCompatActivity {
     private EditText userName;
     private String fireStoreSavedUserName;
-    FirebaseFirestore db ;
+    private FirebaseFirestore db ;
 
 
     @Override
@@ -47,26 +48,17 @@ public class LoginActivity extends AppCompatActivity {
 
         userName = findViewById(R.id.editText);
         Button loginButton = findViewById(R.id.loginButton);
-        Button updateButton = findViewById(R.id.updateButton);
-        updateButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                DocumentReference washingtonRef = db.collection("data").document("one");
-                washingtonRef.update("pastCalculations", Arrays.asList(1, 2, 3,4,5,8,9));
-            }
-        });
 
 
         loginButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 String loggedUserName = userName.getText().toString().trim();
-                startMainActivity();
-//                if(loggedUserName.equals(fireStoreSavedUserName)){
-//                    startMainActivity();
-//                } else {
-//                    Toast.makeText(LoginActivity.this, "Incorrect User Name", Toast.LENGTH_SHORT).show();
-//                }
+                if(loggedUserName.equals(fireStoreSavedUserName)){
+                    startMainActivity();
+                } else {
+                    Toast.makeText(LoginActivity.this, "Incorrect User Name", Toast.LENGTH_SHORT).show();
+                }
 
 
             }
@@ -74,7 +66,25 @@ public class LoginActivity extends AppCompatActivity {
     }
 
     private void getUserName() {
+            db =  FirebaseFirestore.getInstance();
+            db.collection("data").document("userLogin").get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+                @Override
+                public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                    if (task.isSuccessful()) {
+                        DocumentSnapshot document = task.getResult();
+                        if (document.exists()  ) {
 
+                     fireStoreSavedUserName = document.get("user").toString();
+
+                        } else {
+                            Log.d("TAG", "No such document");
+                        }
+                    } else {
+                        Log.d("MainActivity", "get failed with ", task.getException());
+                    }
+
+                }
+            });
 
 
 
