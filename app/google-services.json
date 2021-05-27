@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "227466835138",
+    "project_id": "flytbase-a8373",
+    "storage_bucket": "flytbase-a8373.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:227466835138:android:632ed213ab22c144ae375b",
+        "android_client_info": {
+          "package_name": "com.calculator.myapplication"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "227466835138-vgab6peb74lhfb0qpi8h75nu9o36v9pc.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDMjEno1ED0HnyDIF2pTKAO4mjyAWXlclw"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "227466835138-vgab6peb74lhfb0qpi8h75nu9o36v9pc.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
